@@ -1,0 +1,27 @@
+generated: '2026-07-18'
+method: searched
+source: https://www.cloutdesk.com/agent-platform
+status: beta
+notes: >-
+  CloutDesk's Agent Platform page documents two auth mechanisms for its
+  announced (Beta) REST API and MCP server. No OpenAPI securitySchemes were
+  available to derive from (no spec published); this profile is searched from
+  the vendor page.
+summary:
+  types: [http, oauth2]
+  http_bearer: true
+  oauth2_flows: [authorizationCode]
+  scope_gated: true
+schemes:
+  - name: personalAccessToken
+    type: http
+    scheme: bearer
+    bearer_prefix: 'cd_pat_'
+    audience: power users, scripted/CLI workflows
+    sources: [https://www.cloutdesk.com/agent-platform]
+  - name: oauth2
+    type: oauth2
+    flow: authorizationCode
+    audience: organization-wide installs
+    scopes_documented: [campaigns, collaborations, 'agreements:write']
+    sources: [https://www.cloutdesk.com/agent-platform]
