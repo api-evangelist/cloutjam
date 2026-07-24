@@ -1,0 +1,28 @@
+generated: '2026-07-18'
+method: searched
+source: https://www.cloutdesk.com/agent-platform
+status: beta
+notes: >-
+  Standards CloutDesk states its announced (Beta) agent-native API adheres to,
+  per the Agent Platform page. These are vendor claims about an as-yet
+  unpublished spec; conforms=true reflects a documented claim, not an inspected
+  artifact.
+standards:
+  - id: oauth2
+    conforms: true
+    evidence: OAuth for org-wide installs, scope-gated (documented)
+  - id: rfc7807-problem-details
+    conforms: true
+    evidence: "REST API described as returning RFC 7807 errors"
+  - id: idempotency
+    conforms: true
+    evidence: "idempotent writes via Idempotency-Key header (documented)"
+  - id: cursor-pagination
+    conforms: true
+    evidence: "REST API described as cursor-paginated"
+  - id: openapi-3.1
+    conforms: true
+    evidence: "vendor claims OpenAPI 3.1 (spec not yet published)"
+  - id: mcp
+    conforms: true
+    evidence: "MCP server with stdio + Streamable HTTP transports (announced)"

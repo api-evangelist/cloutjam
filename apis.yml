@@ -1,7 +1,11 @@
 aid: cloutjam
 name: CloutJam
-description: CloutJam is a company surfaced as a portfolio company of 500-global and added to the API
-  Evangelist network as a stub for enrichment. This profile is a lead awaiting the enrichment pipeline.
+description: CloutDesk (formerly CloutJam) is a 500 Global-backed, New York-based platform for modern
+  influencer marketing and creator management, building open infrastructure that lets agencies, brands,
+  and talent representatives run creator partnerships end-to-end - outreach, relationship management,
+  content approval, contract negotiation, invoicing, reporting, and payments. Its agent-first Agent
+  Platform (Beta) exposes every workflow to AI agents through an MCP server, a cursor-paginated REST
+  API with RFC 7807 errors and idempotent writes, and a CLI.
 url: https://raw.githubusercontent.com/api-evangelist/cloutjam/refs/heads/main/apis.yml
 x-type: company
 x-source: vc-portfolio
@@ -9,11 +13,30 @@ x-backed-by:
 - 500-global
 x-tier: stub
 x-tier-reason: portfolio-lead
+accessModel:
+  pricing: unknown
+  onboarding: self-serve
+  trial: false
+  try_now: false
+  public: false
+  label: Self-serve signup
+  confidence: medium
+  source:
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://cdn.prod.website-files.com/684989b6fb9b11bb4d485104/68cd29a469d19b89648e1d17_open-graph.avif
 specificationVersion: '0.20'
 created: '2026-07-17'
-modified: '2026-07-17'
+modified: '2026-07-18'
 tags:
 - Company
+- Influencer Marketing
+- Creator Management
+- Creator Economy
+- Marketing
+- Agentic AI
+- Agents
 apis: []
 maintainers:
 - FN: Kin Lane
@@ -23,3 +46,36 @@ maintainers:
 common:
 - type: Website
   url: https://cloutdesk.com
+- type: DeveloperPortal
+  url: https://www.cloutdesk.com/agent-platform
+- type: Documentation
+  url: https://www.cloutdesk.com/agent-platform
+- type: Login
+  url: https://dashboard.cloutdesk.com
+- type: Support
+  url: mailto:hello@cloutdesk.com
+- type: TermsOfService
+  url: https://www.cloutdesk.com/terms-of-service
+- type: PrivacyPolicy
+  url: https://www.iubenda.com/privacy-policy/65621163/cookie-policy
+- type: Authentication
+  url: authentication/cloutjam-authentication.yml
+- type: OAuthScopes
+  url: scopes/cloutjam-scopes.yml
+- type: Conventions
+  url: conventions/cloutjam-conventions.yml
+- type: Idempotency
+  url: conventions/cloutjam-conventions.yml
+- type: Conformance
+  url: conformance/cloutjam-conformance.yml
+- type: WellKnown
+  url: well-known/cloutjam-well-known.yml
+- type: LLMsTxt
+  url: llms/cloutjam-llms.txt
+- type: DomainSecurity
+  url: security/cloutjam-domain-security.yml
+x-enrichment:
+  date: '2026-07-19'
+  status: backfilled
+  pass: local-v1
+  note: backfilled from .gitignore signal + verified work evidence

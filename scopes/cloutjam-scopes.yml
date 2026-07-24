@@ -1,0 +1,29 @@
+generated: '2026-07-18'
+method: searched
+source: https://www.cloutdesk.com/agent-platform
+status: beta
+notes: >-
+  OAuth scopes documented on CloutDesk's Agent Platform page (Beta). No scope
+  reference / permissions page is published yet; this is the scope set shown in
+  the page's MCP OAuth-login example (`npx @cloutdesk/mcp oauth login`).
+  Enumerated scopes below are those the vendor explicitly names; the full scope
+  catalog is not yet published.
+docs: https://www.cloutdesk.com/agent-platform
+schemes:
+  - name: oauth2
+    source: https://www.cloutdesk.com/agent-platform
+    flows:
+      - flow: authorizationCode
+scopes:
+  - scope: campaigns
+    description: Access to campaigns
+    flows: [authorizationCode]
+    sources: [https://www.cloutdesk.com/agent-platform]
+  - scope: collaborations
+    description: Access to collaborations
+    flows: [authorizationCode]
+    sources: [https://www.cloutdesk.com/agent-platform]
+  - scope: 'agreements:write'
+    description: Write access to agreements
+    flows: [authorizationCode]
+    sources: [https://www.cloutdesk.com/agent-platform]

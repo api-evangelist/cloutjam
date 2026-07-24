@@ -1,0 +1,31 @@
+generated: '2026-07-18'
+method: searched
+source: https://www.cloutdesk.com/agent-platform
+status: announced
+notes: >-
+  CloutDesk announces an MCP server on its Agent Platform page (Beta,
+  "Apply for Beta"). Documented invocation is `npx @cloutdesk/mcp`, with stdio
+  and Streamable HTTP transports and OAuth login. As of this probe the npm
+  package @cloutdesk/mcp is NOT yet published (registry returns 404) and no
+  mcp.cloutdesk.com host resolves, so status is `announced`, not `published`.
+server:
+  name: cloutdesk
+  transports: [stdio, streamable-http]
+  install: npx @cloutdesk/mcp
+  auth: oauth
+  auth_example: 'npx @cloutdesk/mcp oauth login'
+  scopes_example: [campaigns, collaborations, 'agreements:write']
+  clients_documented:
+    - Claude Desktop
+    - Claude.ai workspaces (one-click install)
+    - Claude Managed Agents
+    - Cursor
+package:
+  npm: '@cloutdesk/mcp'
+  registry_status: not-found
+  probed: '2026-07-18'
+tools: []
+tools_note: >-
+  No tool manifest is published yet and there is no OpenAPI spec to derive a
+  candidate tool list from; the page describes workflows over campaigns,
+  collaborations, and agreements exposed through MCP.

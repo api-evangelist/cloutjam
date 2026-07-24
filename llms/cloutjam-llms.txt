@@ -1,0 +1,36 @@
+# CloutDesk (CloutJam)
+
+> The agent-first, AI-native platform for modern influencer marketing and creator management. CloutDesk (formerly CloutJam; 500 Global-backed, NYC) is building open infrastructure for creator marketing — outreach, relationship management, content approval, contract negotiation, invoicing, reporting, and payments — with every workflow exposed to AI agents through MCP, a REST API, and a CLI. The developer platform is in Beta.
+
+## About
+- Company: CloutDesk (formerly CloutJam)
+- Website: https://cloutdesk.com
+- Agent Platform: https://www.cloutdesk.com/agent-platform
+- App / dashboard: https://dashboard.cloutdesk.com
+- Contact: hello@cloutdesk.com
+- Backed by: 500 Global
+
+## Agent-native surfaces (Beta — Apply for Beta)
+- MCP server: `npx @cloutdesk/mcp` — stdio and Streamable HTTP transports; OAuth login; Claude Desktop / Claude.ai / Claude Managed Agents / Cursor (package not yet published on npm as of 2026-07-18)
+- REST API: v1, cursor-paginated, RFC 7807 errors, idempotent writes (Idempotency-Key), OpenAPI 3.1 (spec not yet published); Bearer Personal Access Tokens (`cd_pat_`) and OAuth for org installs
+- CLI: `cloutdesk` (npm) — wraps the REST API for scripted workflows and CI (package not yet published on npm as of 2026-07-18)
+- Webhooks + realtime
+
+## Documented scopes
+- campaigns
+- collaborations
+- agreements:write
+
+## Repo artifacts (API Evangelist enrichment)
+- Conventions: conventions/cloutjam-conventions.yml
+- Authentication: authentication/cloutjam-authentication.yml
+- OAuth scopes: scopes/cloutjam-scopes.yml
+- MCP server: mcp/cloutjam-mcp.yml
+- CLI: cli/cloutjam-cli.yml
+- Conformance: conformance/cloutjam-conformance.yml
+- Domain security: security/cloutjam-domain-security.yml
+- Well-known probe: well-known/cloutjam-well-known.yml
+
+## Legal
+- Terms of Service: https://www.cloutdesk.com/terms-of-service
+- Privacy Policy: https://www.iubenda.com/privacy-policy/65621163/cookie-policy

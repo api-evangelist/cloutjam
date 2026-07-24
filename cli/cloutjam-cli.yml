@@ -1,0 +1,24 @@
+generated: '2026-07-18'
+method: searched
+source: https://www.cloutdesk.com/agent-platform
+status: announced
+notes: >-
+  CloutDesk's Agent Platform page documents a first-party CLI ("cloutdesk on
+  npm") that wraps the REST API for scripted workflows, CI automations, and
+  operator scripts. As of this probe the npm package `cloutdesk` is NOT yet
+  published (registry returns 404), so this is the announced (Beta) command
+  surface, not a shipped binary.
+name: cloutdesk
+install:
+  - method: npm
+    command: npm install -g cloutdesk
+    registry_status: not-found
+    probed: '2026-07-18'
+wraps: REST API (v1)
+commands_documented:
+  - group: campaigns
+    example: 'cloutdesk campaigns:list --status=active'
+key_flows:
+  - scripted workflows
+  - CI automations
+  - ad-hoc operator scripts

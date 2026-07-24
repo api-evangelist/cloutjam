@@ -1,0 +1,56 @@
+generated: '2026-07-18'
+method: searched
+source: https://www.cloutdesk.com/agent-platform
+status: beta
+notes: >-
+  Captured from CloutDesk's public "Agent Platform" page (July 2026), which
+  documents the cross-cutting conventions of its announced agent-native REST
+  API + MCP + CLI surface. The developer platform is in Beta ("Apply for Beta");
+  no OpenAPI spec, docs host, or npm packages are live yet (probed: no
+  api./docs. subdomains resolve; @cloutdesk/mcp and cloutdesk npm packages 404).
+  These are the provider's stated conventions, not derived from a retrievable spec.
+authentication:
+  style: bearer-token
+  token_types:
+    - name: Personal Access Token
+      prefix: 'cd_pat_'
+      use: power users, scripted/CLI workflows
+    - name: OAuth
+      use: organization-wide installs
+  scope_gated: true
+idempotency:
+  supported: true
+  header: Idempotency-Key
+  scope: write operations
+  example: 'POST /v1/collaborations with Idempotency-Key'
+  source_ref: conventions on https://www.cloutdesk.com/agent-platform
+pagination:
+  style: cursor
+  documented_as: Cursor-paginated
+versioning:
+  scheme: uri-path
+  current: v1
+error_envelope:
+  format: rfc7807
+  media_type: application/problem+json
+rate_limiting:
+  documented: true
+  detail: "operations described as rate-limited (signaling format not yet published)"
+governance_controls:
+  - idempotent
+  - scope-gated
+  - audited
+  - rate-limited
+  - dry-runnable
+realtime:
+  webhooks: true
+  realtime: true
+spec:
+  claimed: OpenAPI 3.1
+  published: false
+cross_links:
+  authentication: authentication/cloutjam-authentication.yml
+  scopes: scopes/cloutjam-scopes.yml
+  mcp: mcp/cloutjam-mcp.yml
+  cli: cli/cloutjam-cli.yml
+  conformance: conformance/cloutjam-conformance.yml
