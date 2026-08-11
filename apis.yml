@@ -44,6 +44,8 @@ maintainers:
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: MCPServer
+  url: mcp/cloutjam-mcp.yml
 - type: Website
   url: https://cloutdesk.com
 - type: DeveloperPortal
