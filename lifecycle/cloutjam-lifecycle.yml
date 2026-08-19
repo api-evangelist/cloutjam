@@ -1,0 +1,71 @@
+generated: '2026-08-13'
+method: searched
+source: https://www.cloutdesk.com/agent-platform
+sources:
+- https://www.cloutdesk.com/agent-platform
+- https://github.com/cloutdesk/agents
+notes: >-
+  Versioning is the only lifecycle commitment Cloutdesk publishes: a URI-path-versioned
+  REST API at /v1 (shown verbatim as `POST /v1/collaborations`). Everything else that this
+  artifact normally records is genuinely ABSENT and was probed for, not assumed — there is
+  no status page, no deprecation or sunset policy, no SLA, and no changelog. The platform
+  is a closed beta, which is itself the most important lifecycle fact here: the surface is
+  announced and documented but not generally available, and its two npm packages and its
+  API host do not yet exist. No StatusPage and no Deprecation pointer is emitted in
+  apis.yml, because emitting one would credit Cloutdesk with a page it does not serve.
+maturity:
+  stage: closed-beta
+  label: Closed beta · Now accepting applications
+  generally_available: false
+  source: https://www.cloutdesk.com/agent-platform
+  cohort_note: 'Onboarding "a small cohort of agencies, brands, talent representatives, and platform
+    builders" this quarter; founder-led onboarding, direct line to engineering.'
+versioning:
+  scheme: uri-path
+  current: v1
+  evidence: 'POST /v1/collaborations (https://www.cloutdesk.com/agent-platform)'
+  policy_url: null
+  policy_published: false
+deprecation:
+  policy_url: null
+  policy_published: false
+  sunset_header: null
+  rfc8594: null
+  note: No deprecation or sunset policy is published on any Cloutdesk surface.
+sla:
+  url: null
+  uptime_target: null
+  published: false
+  support_response: 'Two business days to a beta application (stated on the Agent Platform page);
+    no operational SLA is published.'
+status_page:
+  url: null
+  published: false
+  probed:
+  - {url: 'https://status.cloutdesk.com', status: 0, note: DNS does not resolve}
+  - {url: 'https://www.cloutdesk.com/status', status: 404}
+  checked: '2026-08-13'
+changelog:
+  url: null
+  published: false
+  probed:
+  - {url: 'https://www.cloutdesk.com/changelog', status: 404}
+  checked: '2026-08-13'
+  note: The only dated public change signal is the commit history of github.com/cloutdesk/agents
+    (last commit a4f3451, 2026-05-21). That repo carries no tags and no releases.
+availability_probes:
+  checked: '2026-08-13'
+  results:
+  - {host: 'https://api.cloutdesk.com', status: 0, finding: NXDOMAIN — published API base host does not resolve}
+  - {host: 'https://mcp.cloutdesk.com', status: 0, finding: NXDOMAIN}
+  - {host: 'https://docs.cloutdesk.com', status: 0, finding: NXDOMAIN}
+  - {host: 'https://developer.cloutdesk.com', status: 0, finding: NXDOMAIN}
+  - {host: 'https://dashboard.cloutdesk.com', status: 200, finding: live SPA (Vite + Supabase + PostHog)}
+  - {host: 'https://app.cloutdesk.com', status: 200, finding: redirects to dashboard.cloutdesk.com}
+  - {host: 'https://www.cloutdesk.com', status: 200, finding: Webflow marketing site; last published 2026-04-30}
+deprecated_operations: []
+cross_links:
+  conventions: conventions/cloutjam-conventions.yml
+  mcp: mcp/cloutjam-mcp.yml
+  packages: packages/cloutjam-packages.yml
+  rate_limits: rate-limits/cloutjam-rate-limits.yml

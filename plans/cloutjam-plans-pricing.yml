@@ -1,0 +1,33 @@
+generated: '2026-08-13'
+method: searched
+source: https://www.cloutdesk.com/agent-platform
+sources:
+- https://cloutdesk.com/
+- https://www.cloutdesk.com/agent-platform
+- https://www.cloutdesk.com/pricing
+notes: >-
+  Cloutdesk publishes NO pricing. There is no pricing page (/pricing returns HTTP 404,
+  probed 2026-08-13), no pricing link in the navigation or footer of either the homepage
+  or the Agent Platform page (every nav/footer href on both pages was enumerated), and no
+  machine-readable pricing or catalog endpoint. Access to the Agent Platform is gated
+  behind a closed-beta application form ("Apply for Beta" — name, company website, work
+  email, use case; the provider states it responds within two business days) and a
+  "Book a Demo" call to action. This is a sales-gated commercial model, recorded as an
+  honest zero rather than omitted.
+plan_count: 0
+plans: []
+model:
+  type: closed-beta-application
+  self_serve: false
+  free_tier: null
+  trial: null
+  public_pricing: false
+  contact: hello@cloutdesk.com
+  apply_url: https://www.cloutdesk.com/agent-platform#beta
+  demo: true
+evidence:
+- {url: 'https://www.cloutdesk.com/pricing', status: 404, checked: '2026-08-13'}
+- {url: 'https://www.cloutdesk.com/agent-platform', status: 200, checked: '2026-08-13',
+   finding: 'closed beta application form; no price stated anywhere on the page'}
+- {url: 'https://cloutdesk.com/', status: 200, checked: '2026-08-13',
+   finding: 'no pricing link in nav or footer'}

@@ -1,31 +1,152 @@
-generated: '2026-07-18'
+generated: '2026-08-13'
 method: searched
-source: https://www.cloutdesk.com/agent-platform
+source: https://github.com/cloutdesk/agents
+sources:
+- https://www.cloutdesk.com/agent-platform
+- https://github.com/cloutdesk/agents
+- https://github.com/cloutdesk/agents/blob/main/README.md
 status: announced
 notes: >-
-  CloutDesk announces an MCP server on its Agent Platform page (Beta,
-  "Apply for Beta"). Documented invocation is `npx @cloutdesk/mcp`, with stdio
-  and Streamable HTTP transports and OAuth login. As of this probe the npm
-  package @cloutdesk/mcp is NOT yet published (registry returns 404) and no
-  mcp.cloutdesk.com host resolves, so status is `announced`, not `published`.
+  UPGRADE over the 2026-07-18 round. Cloutdesk now publishes a first-party public
+  GitHub repository (github.com/cloutdesk/agents, MIT) whose README and agent
+  templates name the SIX MCP tools its server exposes, the MCP server config key
+  (`cloutdesk`, so tools resolve as `cloutdesk__<tool>`), the API base URL env var
+  (`CLOUTDESK_API_URL: https://api.cloutdesk.com`), and the PAT env var
+  (`CLOUTDESK_AGENT_PAT`). The tool list below is therefore SEARCHED from the
+  provider's own repo, not derived — but the server itself is still not reachable:
+  re-probed 2026-08-13, the npm package `@cloutdesk/mcp` returns 404, no
+  `mcp.cloutdesk.com` host resolves, `api.cloutdesk.com` does not resolve (NXDOMAIN),
+  and the provider's own claude_desktop_config example ships placeholders
+  (`"<your-cloutdesk-mcp-command>"`) rather than a runnable command. The Agent
+  Platform is a closed beta ("Apply for Beta"). Status stays `announced`.
 server:
   name: cloutdesk
-  transports: [stdio, streamable-http]
+  config_key: cloutdesk
+  tool_namespace: cloutdesk__<tool>
+  transports:
+  - stdio
+  - streamable-http
   install: npx @cloutdesk/mcp
   auth: oauth
-  auth_example: 'npx @cloutdesk/mcp oauth login'
-  scopes_example: [campaigns, collaborations, 'agreements:write']
+  auth_detail: OAuth 2.1 + PKCE (Claude Managed Agents); scoped Personal Access Tokens (cd_pat_) for
+    power users and scripted workflows
+  auth_example: npx @cloutdesk/mcp oauth login
+  env:
+  - name: CLOUTDESK_API_URL
+    value: https://api.cloutdesk.com
+    source: https://github.com/cloutdesk/agents/blob/main/README.md
+  - name: CLOUTDESK_AGENT_PAT
+    value: <personal access token minted from the Cloutdesk dashboard>
+    source: https://github.com/cloutdesk/agents/blob/main/README.md
+  scopes_documented:
+  - collaborations:read
+  - creators:read
+  - events:emit
+  - transactions:read
+  scopes_agent_platform_page:
+  - campaigns
+  - collaborations
+  - agreements:write
   clients_documented:
-    - Claude Desktop
-    - Claude.ai workspaces (one-click install)
-    - Claude Managed Agents
-    - Cursor
+  - Claude Desktop
+  - Claude Code
+  - Claude.ai workspaces (one-click install)
+  - Claude Managed Agents
+  - OpenAI Codex
+  - Microsoft Agent Framework
+  - Cursor
 package:
   npm: '@cloutdesk/mcp'
   registry_status: not-found
-  probed: '2026-07-18'
-tools: []
+  probed: '2026-08-13'
+  probe_note: registry.npmjs.org/@cloutdesk%2Fmcp returned HTTP 404
+deployment:
+  mode: local-stdio
+  install: npx @cloutdesk/mcp
+  package: https://www.npmjs.com/package/@cloutdesk/mcp
+  package_status: unpublished
+  auth: oauth
+  verified: probed
+  checked: '2026-08-13'
+  note: >-
+    The provider's Agent Platform page also advertises "a hosted MCP endpoint" for
+    Claude Managed Agents, which would make this `both`. No endpoint URL is published
+    anywhere on the site or in the repo, and mcp.cloutdesk.com does not resolve, so no
+    remote endpoint is recorded here — an MCP endpoint URL is never guessed. Mode stays
+    local-stdio because `npx @cloutdesk/mcp` is the only invocation the provider states
+    verbatim, and even that package is not yet on npm.
+tools_source: https://github.com/cloutdesk/agents/blob/main/README.md
 tools_note: >-
-  No tool manifest is published yet and there is no OpenAPI spec to derive a
-  candidate tool list from; the page describes workflows over campaigns,
-  collaborations, and agreements exposed through MCP.
+  Names and purposes are published by the provider; input schemas are NOT. There is no
+  OpenAPI document and `tools/list` cannot be called (no reachable server), so no
+  inputSchema is recorded. Argument names below appear verbatim in the provider's own
+  JSON-RPC invocation examples in agents/rep-assistant/agent.md.
+tools:
+- name: list_collabs
+  qualified_name: cloutdesk__list_collabs
+  description: Enumerate an agency's collaborations for status, proposal, benchmark, and invoice
+    cross-reference context.
+  arguments_documented:
+  - status
+  scopes:
+  - collaborations:read
+  access: read
+- name: get_collab
+  qualified_name: cloutdesk__get_collab
+  description: Read a specific collaboration — deliverable state, locked commercial terms, payment
+    schedule, commission split, and metrics.
+  arguments_documented:
+  - collab_id
+  scopes:
+  - collaborations:read
+  access: read
+- name: get_talent_profile
+  qualified_name: cloutdesk__get_talent_profile
+  description: Read a creator's audience demographics and historical performance baseline.
+  arguments_documented:
+  - creator_id
+  scopes:
+  - creators:read
+  access: read
+- name: get_revenue_summary
+  qualified_name: cloutdesk__get_revenue_summary
+  description: Read the agency's AR aging, invoice state, and payout queue with Stripe Connect account
+    context.
+  arguments_documented: []
+  scopes:
+  - transactions:read
+  access: read
+- name: emit_event
+  qualified_name: cloutdesk__emit_event
+  description: Log a communication, review, negotiation, or status-change event onto the collaboration
+    timeline / audit trail.
+  arguments_documented: []
+  scopes:
+  - events:emit
+  access: write
+- name: comment_on_deliverable
+  qualified_name: cloutdesk__comment_on_deliverable
+  description: Post a coordination note on a deliverable to move it forward.
+  arguments_documented:
+  - deliverable_id
+  - body
+  scopes:
+  - collaborations:read
+  - events:emit
+  access: write
+tool_count: 6
+write_tools: 2
+read_tools: 4
+consumers:
+  skills: skills/_index.yml
+  skill_count: 16
+  template_count: 4
+  note: The provider's 16 published Agent Skills and 4 agent templates are all bound to these six
+    tools; saved verbatim under skills/.
+cross_links:
+  authentication: authentication/cloutjam-authentication.yml
+  scopes: scopes/cloutjam-scopes.yml
+  conventions: conventions/cloutjam-conventions.yml
+  skills: skills/_index.yml
+  data_model: data-model/cloutjam-data-model.yml
+  cli: cli/cloutjam-cli.yml

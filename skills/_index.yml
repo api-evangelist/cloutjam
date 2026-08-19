@@ -1,0 +1,356 @@
+generated: '2026-08-13'
+method: searched
+source: https://github.com/cloutdesk/agents
+format: Anthropic Agent Skills (SKILL.md) + Anthropic/OpenAI Codex subagent format (agent.md) + Microsoft
+  Agent Framework declarative manifest (microsoft.yaml)
+license: MIT
+upstream:
+  repo: https://github.com/cloutdesk/agents
+  org: https://github.com/cloutdesk
+  commit: a4f3451a07261da1e25dce93ae3bc509ae805b10
+  commit_date: '2026-05-21'
+  cloned: '2026-08-13'
+  contributor_guide: cloutjam-AGENTS.md
+notes: First-party Agent Skills published by Cloutdesk in its own public GitHub org and saved here VERBATIM
+  (filenames prefixed cloutjam-; file bodies unmodified). 16 atomic skills follow the Anthropic Agent
+  Skills SKILL.md standard; 4 persona templates ship both an agent.md (Claude Code / OpenAI Codex subagent
+  format) and a microsoft.yaml (Microsoft Agent Framework declarative manifest). Every skill and template
+  is grounded in the six published Cloutdesk MCP tools rather than an OpenAPI operationId set, because
+  Cloutdesk publishes no OpenAPI document (see mcp/cloutjam-mcp.yml).
+grounding:
+  basis: MCP tools
+  openapi: null
+  openapi_note: No OpenAPI document is published by Cloutdesk; skills bind to MCP tool names, not operationIds.
+  mcp: mcp/cloutjam-mcp.yml
+skill_count: 16
+template_count: 4
+skills:
+- file: cloutjam-campaign-brief-drafting.md
+  name: campaign-brief-drafting
+  description: Use this skill to draft an influencer campaign brief from a brand's objectives, budget,
+    target audience, and channel preferences. Produces a structured brief that a Talent Rep can read,
+    react to, and propose against — the inverse of the proposal-drafting flow.
+  license: MIT
+  mcp_tools:
+  - get_collab
+  - list_collabs
+  scopes:
+  - collaborations:read
+  composed_into: []
+  source: https://github.com/cloutdesk/agents/blob/main/skills/campaign-brief-drafting/SKILL.md
+- file: cloutjam-campaign-recap-reporting.md
+  name: campaign-recap-reporting
+  description: Use this skill to produce a campaign performance recap after a marketer's influencer campaign
+    wraps. Assembles participating creators, posted deliverables, engagement metrics, and outcomes against
+    the original brief into a stakeholder-ready report.
+  license: MIT
+  mcp_tools:
+  - emit_event
+  - get_collab
+  - list_collabs
+  scopes:
+  - collaborations:read
+  - events:emit
+  composed_into: []
+  source: https://github.com/cloutdesk/agents/blob/main/skills/campaign-recap-reporting/SKILL.md
+- file: cloutjam-client-reporting.md
+  name: client-reporting
+  description: Use this skill to compose client-facing performance recaps for a talent agency's brand
+    clients. Reads active and recently completed collabs across the agency's roster, then narrates the
+    agency's contribution in language calibrated for a client deck.
+  license: MIT
+  mcp_tools:
+  - get_collab
+  - get_talent_profile
+  - list_collabs
+  scopes:
+  - collaborations:read
+  - creators:read
+  composed_into:
+  - rep-assistant
+  - talent-dev
+  source: https://github.com/cloutdesk/agents/blob/main/skills/client-reporting/SKILL.md
+- file: cloutjam-compliance-check.md
+  name: compliance-check
+  description: Use this skill to review contract terms and creator-facing language against compliance
+    constraints — FTC disclosure rules, exclusivity windows, usage rights boundaries, and payment-term
+    sanity. Flags risk before an agreement goes out the door or a payout clears.
+  license: MIT
+  mcp_tools:
+  - get_collab
+  scopes:
+  - collaborations:read
+  composed_into:
+  - agreement-reviewer
+  - finance-coordinator
+  source: https://github.com/cloutdesk/agents/blob/main/skills/compliance-check/SKILL.md
+- file: cloutjam-content-performance-analysis.md
+  name: content-performance-analysis
+  description: Use this skill to analyze posted-content performance against benchmarks for a creator's
+    recent deliverables. Scores engagement, reach, and audience-quality signals per post, then surfaces
+    the insights a Talent Rep would otherwise compute by hand.
+  license: MIT
+  mcp_tools:
+  - get_collab
+  - get_talent_profile
+  - list_collabs
+  scopes:
+  - collaborations:read
+  - creators:read
+  composed_into:
+  - rep-assistant
+  - talent-dev
+  source: https://github.com/cloutdesk/agents/blob/main/skills/content-performance-analysis/SKILL.md
+- file: cloutjam-content-strategy.md
+  name: content-strategy
+  description: Use this skill to recommend content directions for a creator based on their audience composition,
+    brand fit signals, and what is currently working in adjacent creators' recent posts. Read-and-advise,
+    not action-taking.
+  license: MIT
+  mcp_tools:
+  - get_talent_profile
+  - list_collabs
+  scopes:
+  - collaborations:read
+  - creators:read
+  composed_into:
+  - talent-dev
+  source: https://github.com/cloutdesk/agents/blob/main/skills/content-strategy/SKILL.md
+- file: cloutjam-deliverable-tracking.md
+  name: deliverable-tracking
+  description: Use this skill to surface deliverable status across an agency's active collabs, comment
+    on specific deliverables to push them forward, and emit events when status changes. The day-to-day
+    coordination layer beneath a Talent Rep's inbox.
+  license: MIT
+  mcp_tools:
+  - comment_on_deliverable
+  - emit_event
+  - get_collab
+  - list_collabs
+  scopes:
+  - collaborations:read
+  - collaborations:write
+  - events:emit
+  composed_into:
+  - rep-assistant
+  source: https://github.com/cloutdesk/agents/blob/main/skills/deliverable-tracking/SKILL.md
+- file: cloutjam-influencer-contract-drafting.md
+  name: influencer-contract-drafting
+  description: Use this skill to draft a creator agreement from a collab's locked terms — rate, deliverables,
+    exclusivity windows, usage rights, and payment schedule. Produces a clean first draft ready for review
+    and redline by the agency's contract owner.
+  license: MIT
+  mcp_tools:
+  - get_collab
+  scopes:
+  - collaborations:read
+  composed_into:
+  - agreement-reviewer
+  source: https://github.com/cloutdesk/agents/blob/main/skills/influencer-contract-drafting/SKILL.md
+- file: cloutjam-influencer-contract-negotiation.md
+  name: influencer-contract-negotiation
+  description: Use this skill to counter-propose terms in an active creator agreement negotiation. Reads
+    the other side's redlines, evaluates them against the agency's playbook, and drafts a counter-proposal
+    that holds the agency's positions while acknowledging the creator's asks.
+  license: MIT
+  mcp_tools:
+  - emit_event
+  - get_collab
+  scopes:
+  - collaborations:read
+  - events:emit
+  composed_into:
+  - agreement-reviewer
+  source: https://github.com/cloutdesk/agents/blob/main/skills/influencer-contract-negotiation/SKILL.md
+- file: cloutjam-influencer-contract-review.md
+  name: influencer-contract-review
+  description: Use this skill to review an inbound creator agreement for risk coverage and term completeness.
+    Classifies redlines by risk level, flags missing standard clauses, and produces a short summary the
+    contract owner can act on without reading the full document.
+  license: MIT
+  mcp_tools:
+  - emit_event
+  - get_collab
+  scopes:
+  - collaborations:read
+  - events:emit
+  composed_into:
+  - agreement-reviewer
+  source: https://github.com/cloutdesk/agents/blob/main/skills/influencer-contract-review/SKILL.md
+- file: cloutjam-invoice-management.md
+  name: invoice-management
+  description: Use this skill to track invoice issuance, payment status, and reconciliation against the
+    collab terms that drove each invoice. Surfaces what is overdue, what is in dispute, and what is ready
+    to release for payout.
+  license: MIT
+  mcp_tools:
+  - get_collab
+  - get_revenue_summary
+  - list_collabs
+  scopes:
+  - collaborations:read
+  - transactions:read
+  composed_into:
+  - finance-coordinator
+  source: https://github.com/cloutdesk/agents/blob/main/skills/invoice-management/SKILL.md
+- file: cloutjam-media-kit-creation.md
+  name: media-kit-creation
+  description: Use this skill to compose a creator's media kit from profile, audience, and historical
+    performance data. Produces a structured asset ready for outbound brand pitching — the agency's standard
+    pitch packet without the manual assembly.
+  license: MIT
+  mcp_tools:
+  - get_talent_profile
+  - list_collabs
+  scopes:
+  - collaborations:read
+  - creators:read
+  composed_into:
+  - talent-dev
+  source: https://github.com/cloutdesk/agents/blob/main/skills/media-kit-creation/SKILL.md
+- file: cloutjam-payout-orchestration.md
+  name: payout-orchestration
+  description: Use this skill to coordinate creator payouts across active collabs — computing the agency's
+    commission split, routing the creator-side disbursement through Stripe Connect, and surfacing payout
+    state for the finance team.
+  license: MIT
+  mcp_tools:
+  - get_collab
+  - get_revenue_summary
+  - list_collabs
+  scopes:
+  - collaborations:read
+  - transactions:read
+  composed_into:
+  - finance-coordinator
+  source: https://github.com/cloutdesk/agents/blob/main/skills/payout-orchestration/SKILL.md
+- file: cloutjam-proposal-drafting.md
+  name: proposal-drafting
+  description: Use this skill to compose a proposal slate against a talent agency's roster from an inbound
+    brand brief or RFP. Reads the brief's audience and creative targets, scores the agency's available
+    creators against them, and drafts a multi-creator pitch the rep can send.
+  license: MIT
+  mcp_tools:
+  - get_collab
+  - get_talent_profile
+  - list_collabs
+  scopes:
+  - collaborations:read
+  - creators:read
+  composed_into:
+  - rep-assistant
+  source: https://github.com/cloutdesk/agents/blob/main/skills/proposal-drafting/SKILL.md
+- file: cloutjam-talent-communications.md
+  name: talent-communications
+  description: Use this skill to draft creator-facing communications across the collab lifecycle — initial
+    outreach, status updates, deliverable feedback, and closeout notes. Calibrates voice and detail to
+    the collab's stage and the creator's prior interaction pattern.
+  license: MIT
+  mcp_tools:
+  - emit_event
+  - get_collab
+  scopes:
+  - collaborations:read
+  - events:emit
+  composed_into:
+  - rep-assistant
+  source: https://github.com/cloutdesk/agents/blob/main/skills/talent-communications/SKILL.md
+- file: cloutjam-talent-discovery.md
+  name: talent-discovery
+  description: Use this skill to discover and shortlist talent candidates from an agency's roster based
+    on audience demographics, brand fit signals, and historical performance. The starting point for any
+    proposal-slate or new-business-pitch flow.
+  license: MIT
+  mcp_tools:
+  - get_talent_profile
+  - list_collabs
+  scopes:
+  - collaborations:read
+  - creators:read
+  composed_into:
+  - rep-assistant
+  - talent-dev
+  source: https://github.com/cloutdesk/agents/blob/main/skills/talent-discovery/SKILL.md
+templates:
+- file: templates/cloutjam-agreement-reviewer-agent.md
+  microsoft_manifest: templates/cloutjam-agreement-reviewer-microsoft.yaml
+  name: agreement-reviewer
+  description: Use this agent for agreement workflows — composing agreements from collaboration activity
+    context, classifying risks in inbound contract paperwork against the agency's playbook, drafting redlines,
+    and surfacing compliance gates before signature.
+  skills:
+  - influencer-contract-drafting
+  - influencer-contract-review
+  - influencer-contract-negotiation
+  - compliance-check
+  tools:
+  - cloutdesk__list_collabs
+  - cloutdesk__get_collab
+  - cloutdesk__emit_event
+  scopes:
+  - collaborations:read
+  - events:emit
+  source: https://github.com/cloutdesk/agents/blob/main/agents/agreement-reviewer/agent.md
+- file: templates/cloutjam-finance-coordinator-agent.md
+  microsoft_manifest: templates/cloutjam-finance-coordinator-microsoft.yaml
+  name: finance-coordinator
+  description: Use this agent for financial-surface workflows — invoice composition on agreement-signed,
+    payment-status monitoring, Stripe Connect payout routing for the agency commission split and the creator
+    side, and pre-payout compliance checks.
+  skills:
+  - payout-orchestration
+  - invoice-management
+  - compliance-check
+  tools:
+  - cloutdesk__get_revenue_summary
+  - cloutdesk__list_collabs
+  - cloutdesk__get_collab
+  scopes:
+  - transactions:read
+  - collaborations:read
+  source: https://github.com/cloutdesk/agents/blob/main/agents/finance-coordinator/agent.md
+- file: templates/cloutjam-rep-assistant-agent.md
+  microsoft_manifest: templates/cloutjam-rep-assistant-microsoft.yaml
+  name: rep-assistant
+  description: Use this agent for Talent-Rep workflows — drafting proposal slates from inbound RFPs, composing
+    client performance recaps, coordinating deliverables across active collaborations, and drafting creator-facing
+    communications. The Talent Rep's right hand.
+  skills:
+  - talent-discovery
+  - proposal-drafting
+  - talent-communications
+  - deliverable-tracking
+  - content-performance-analysis
+  - client-reporting
+  tools:
+  - cloutdesk__list_collabs
+  - cloutdesk__get_collab
+  - cloutdesk__get_talent_profile
+  - cloutdesk__emit_event
+  - cloutdesk__comment_on_deliverable
+  scopes:
+  - collaborations:read
+  - creators:read
+  - events:emit
+  source: https://github.com/cloutdesk/agents/blob/main/agents/rep-assistant/agent.md
+- file: templates/cloutjam-talent-dev-agent.md
+  microsoft_manifest: templates/cloutjam-talent-dev-microsoft.yaml
+  name: talent-dev
+  description: Use this agent for talent-development workflows — recommending content directions calibrated
+    to a creator's audience and current brand opportunities, composing creator media kits for outbound
+    pitching, and surfacing performance highlights for new-business preparation. Read-and-advise rather
+    than action-taking.
+  skills:
+  - content-strategy
+  - media-kit-creation
+  - talent-discovery
+  - content-performance-analysis
+  - client-reporting
+  tools:
+  - cloutdesk__get_talent_profile
+  - cloutdesk__list_collabs
+  - cloutdesk__get_collab
+  scopes:
+  - creators:read
+  - collaborations:read
+  source: https://github.com/cloutdesk/agents/blob/main/agents/talent-dev/agent.md

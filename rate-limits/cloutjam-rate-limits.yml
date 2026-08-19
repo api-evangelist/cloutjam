@@ -1,0 +1,39 @@
+generated: '2026-08-13'
+method: searched
+source: https://www.cloutdesk.com/agent-platform
+sources:
+- https://www.cloutdesk.com/agent-platform
+- https://github.com/cloutdesk/agents
+notes: >-
+  Cloutdesk states that its agent surface is rate-limited — "Rate-limited" is one of the
+  six governance guarantees listed on the Agent Platform page, alongside Idempotent,
+  Scope-gated, Audited, Dry-runnable, and Webhook + Realtime — but publishes NO NUMBERS,
+  NO WINDOWS, and NO RESPONSE HEADERS. The provider's own agents repo confirms the gap
+  from the other direction: its README FAQ says "Auth, rate limits, observability, and
+  error handling are the integrator's responsibility." There is no API reference, no
+  OpenAPI, and no docs host to read limits from, and the API host (api.cloutdesk.com)
+  does not resolve, so no live response could be observed either. Recorded as an honest
+  zero: the posture is claimed, the runtime signal an agent would need is absent.
+limit_count: 0
+limits: []
+signaling:
+  headers: []
+  headers_documented: false
+  exhaustion_status: null
+  retry_after: null
+  note: No X-RateLimit-*, RateLimit-*, or Retry-After header is documented, and none could be
+    observed — api.cloutdesk.com returns NXDOMAIN as of 2026-08-13.
+claimed:
+  rate_limited: true
+  claim_source: https://www.cloutdesk.com/agent-platform
+  claim_text: 'Rate-limited (listed as a platform guarantee alongside Idempotent, Scope-gated,
+    Audited, Dry-runnable, Webhook + Realtime)'
+  quantified: false
+evidence:
+- {url: 'https://www.cloutdesk.com/agent-platform', status: 200, checked: '2026-08-13',
+   finding: 'rate limiting asserted as a guarantee; no limit, window, or header published'}
+- {url: 'https://api.cloutdesk.com/', status: 0, checked: '2026-08-13',
+   finding: 'DNS NXDOMAIN — no live response available to observe headers on'}
+cross_links:
+  conventions: conventions/cloutjam-conventions.yml
+  lifecycle: lifecycle/cloutjam-lifecycle.yml

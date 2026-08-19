@@ -1,0 +1,77 @@
+generated: '2026-08-13'
+method: searched
+source: registry probes + https://www.cloutdesk.com/agent-platform + https://github.com/cloutdesk/agents
+notes: >-
+  Cloutdesk names two npm packages on its Agent Platform page — `@cloutdesk/mcp`
+  (the MCP server) and `cloutdesk` (the CLI) — but NEITHER IS PUBLISHED. Probed
+  2026-08-13 against registry.npmjs.org: both return HTTP 404, as do `@cloutdesk/sdk`,
+  `@cloutdesk/cli`, `cloutdesk-mcp`, and PyPI `cloutdesk`. The only first-party
+  distribution that actually exists is the MIT-licensed GitHub repo
+  github.com/cloutdesk/agents, which is git-cloneable but carries no tags and no
+  releases, so it has no version to read either. `version: null` on every entry below
+  means CHECKED, NOTHING TO RECORD — not unchecked. No `SDKs` pointer is emitted in
+  apis.yml because no client library is installable.
+probe:
+  date: '2026-08-13'
+  registries_checked: [npm, pypi]
+  npm_endpoint: https://registry.npmjs.org/<pkg>
+  pypi_endpoint: https://pypi.org/pypi/<pkg>/json
+package_count: 0
+installable_count: 0
+packages:
+- language: javascript
+  registry: npm
+  name: '@cloutdesk/mcp'
+  url: https://www.npmjs.com/package/@cloutdesk/mcp
+  install: npx @cloutdesk/mcp
+  official: true
+  status: announced-not-published
+  version: null
+  published: null
+  registry_status: 404
+  probed: '2026-08-13'
+  role: MCP server (stdio + Streamable HTTP)
+  note: Named verbatim on https://www.cloutdesk.com/agent-platform. registry.npmjs.org returns 404 —
+    the package does not exist. Announced for the closed beta.
+- language: javascript
+  registry: npm
+  name: cloutdesk
+  url: https://www.npmjs.com/package/cloutdesk
+  install: npm install -g cloutdesk
+  official: true
+  status: announced-not-published
+  version: null
+  published: null
+  registry_status: 404
+  probed: '2026-08-13'
+  role: CLI wrapping the REST API
+  note: Named verbatim on https://www.cloutdesk.com/agent-platform ("cloutdesk on npm").
+    registry.npmjs.org returns 404 — the package does not exist.
+distributions:
+- kind: git
+  registry: github
+  name: cloutdesk/agents
+  url: https://github.com/cloutdesk/agents
+  install: git clone https://github.com/cloutdesk/agents.git
+  official: true
+  license: MIT
+  status: published
+  version: null
+  published: null
+  probed: '2026-08-13'
+  note: >-
+    Real, cloneable, first-party — 16 Agent Skills + 4 agent templates (saved verbatim
+    under skills/). Distribution is UNVERSIONED: `git ls-remote --tags` returns nothing
+    and the repo has no releases, so a consumer cannot pin anything and cannot tell what
+    they are getting. Last commit a4f3451 dated 2026-05-21. version/published are null
+    because there is nothing published to read, not because the check was skipped.
+  content: agent skills and templates, not a client library
+negative_probes:
+- {registry: npm, name: '@cloutdesk/sdk', status: 404, probed: '2026-08-13'}
+- {registry: npm, name: '@cloutdesk/cli', status: 404, probed: '2026-08-13'}
+- {registry: npm, name: cloutdesk-mcp, status: 404, probed: '2026-08-13'}
+- {registry: pypi, name: cloutdesk, status: 404, probed: '2026-08-13'}
+cross_links:
+  mcp: mcp/cloutjam-mcp.yml
+  cli: cli/cloutjam-cli.yml
+  skills: skills/_index.yml

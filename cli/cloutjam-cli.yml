@@ -1,24 +1,42 @@
-generated: '2026-07-18'
+generated: '2026-08-13'
 method: searched
 source: https://www.cloutdesk.com/agent-platform
 status: announced
 notes: >-
-  CloutDesk's Agent Platform page documents a first-party CLI ("cloutdesk on
-  npm") that wraps the REST API for scripted workflows, CI automations, and
-  operator scripts. As of this probe the npm package `cloutdesk` is NOT yet
-  published (registry returns 404), so this is the announced (Beta) command
-  surface, not a shipped binary.
+  Cloutdesk's Agent Platform page documents a first-party CLI ("cloutdesk on npm") that
+  wraps the REST API for scripted workflows, CI automations, and operator scripts. RE-PROBED
+  2026-08-13: the npm package `cloutdesk` still returns HTTP 404 from registry.npmjs.org, as
+  do `@cloutdesk/cli` and `@cloutdesk/mcp`. This remains an announced (closed beta) command
+  surface, not a shipped binary. Only one command is shown verbatim by the provider; the rest
+  of the surface is unpublished and is not guessed at here.
 name: cloutdesk
 install:
-  - method: npm
-    command: npm install -g cloutdesk
-    registry_status: not-found
-    probed: '2026-07-18'
+- method: npm
+  command: npm install -g cloutdesk
+  registry: https://registry.npmjs.org/cloutdesk
+  registry_status: 404
+  probed: '2026-08-13'
+version: null
+published: null
+version_note: No published package, therefore no version to read. Checked, nothing to record.
 wraps: REST API (v1)
+auth: Personal Access Token (cd_pat_), per the platform's documented CLI/scripted-workflow path
 commands_documented:
-  - group: campaigns
-    example: 'cloutdesk campaigns:list --status=active'
+- group: campaigns
+  command: 'cloutdesk campaigns:list'
+  example: 'cloutdesk campaigns:list --status=active'
+  flags: ['--status']
+  output_example: 'Q2 BACK-TO-SCH · 14 collabs · $148K'
+command_syntax: '<group>:<verb> (colon-separated), per the single published example'
+commands_documented_count: 1
 key_flows:
-  - scripted workflows
-  - CI automations
-  - ad-hoc operator scripts
+- scripted workflows
+- CI automations
+- ad-hoc operator scripts
+gaps:
+- No CLI reference, command list, or help output is published beyond the single example above.
+- Package is not on npm, so the surface cannot be inspected by installing it.
+cross_links:
+  packages: packages/cloutjam-packages.yml
+  authentication: authentication/cloutjam-authentication.yml
+  conventions: conventions/cloutjam-conventions.yml

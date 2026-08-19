@@ -1,20 +1,72 @@
-generated: '2026-07-18'
-method: searched
-host: https://www.cloutdesk.com
+generated: '2026-08-13'
+method: probed
+source: live HTTP probes of every Cloutdesk host that resolves
+checked: '2026-08-13'
 notes: >-
-  Probed the base host's /.well-known/ discovery surface plus /llms.txt. None
-  are published (all 404). Recorded as valid empty result. No api./docs.
-  subdomains resolve to probe separately.
-documents:
-  - path: /.well-known/security.txt
-    status: 404
-  - path: /.well-known/openid-configuration
-    status: 404
-  - path: /.well-known/oauth-authorization-server
-    status: 404
-  - path: /.well-known/api-catalog
-    status: 404
-  - path: /.well-known/ai-plugin.json
-    status: 404
-  - path: /llms.txt
-    status: 404
+  NOTHING IS SERVED. Cloutdesk publishes no /.well-known/ discovery surface on any host.
+  Two hosts were probed and they fail in two different ways, both recorded below because
+  the second one is a trap:
+
+  (1) www.cloutdesk.com — the Webflow marketing site — returns a clean 404 on every
+  well-known path, on /llms.txt, and on /security.txt.
+
+  (2) dashboard.cloutdesk.com — the live Vite SPA — returns HTTP 200 with
+  `content-type: text/html` on EVERY path, including /.well-known/agent-card.json,
+  /.well-known/security.txt and /llms.txt. This is a single-page-app catch-all, not a
+  published document. A NEGATIVE CONTROL confirms it: the invented path
+  /.well-known/this-path-does-not-exist-12345 also returns 200 with the identical HTML
+  shell. Every one of these is recorded as a MISS (`hit: false`) and NO WellKnown,
+  SecurityTxt, or AgentCard pointer is emitted — a 200 carrying an SPA shell is not a
+  document, and the agent-card path in particular must never be credited from one.
+
+  The remaining hosts named by the provider — api.cloutdesk.com (published in its own
+  repo as CLOUTDESK_API_URL), mcp.cloutdesk.com, docs.cloutdesk.com and
+  developer.cloutdesk.com — do not resolve at all (NXDOMAIN), so there was nothing to
+  probe. A recorded absence is valid data.
+hit_count: 0
+hosts:
+- host: https://www.cloutdesk.com
+  reachable: true
+  server: Webflow
+  behavior: clean-404
+  documents:
+  - {path: /.well-known/security.txt, status: 404, hit: false}
+  - {path: /.well-known/openid-configuration, status: 404, hit: false}
+  - {path: /.well-known/oauth-authorization-server, status: 404, hit: false}
+  - {path: /.well-known/oauth-protected-resource, status: 404, hit: false}
+  - {path: /.well-known/api-catalog, status: 404, hit: false}
+  - {path: /.well-known/ai-plugin.json, status: 404, hit: false}
+  - {path: /.well-known/agent-card.json, status: 404, hit: false}
+  - {path: /.well-known/agent.json, status: 404, hit: false}
+  - {path: /llms.txt, status: 404, hit: false}
+  - {path: /security.txt, status: 404, hit: false}
+- host: https://dashboard.cloutdesk.com
+  reachable: true
+  server: Vite SPA (Supabase + PostHog)
+  behavior: spa-catch-all
+  behavior_note: 200 + text/html on every path; not a document server
+  negative_control:
+    path: /.well-known/this-path-does-not-exist-12345
+    status: 200
+    content_type: text/html; charset=utf-8
+    conclusion: catch-all confirmed — every 200 on this host is a false positive
+  documents:
+  - {path: /.well-known/security.txt, status: 200, content_type: 'text/html; charset=utf-8', hit: false, reason: spa-html-shell}
+  - {path: /.well-known/openid-configuration, status: 200, content_type: 'text/html; charset=utf-8', hit: false, reason: spa-html-shell}
+  - {path: /.well-known/oauth-authorization-server, status: 200, content_type: 'text/html; charset=utf-8', hit: false, reason: spa-html-shell}
+  - {path: /.well-known/oauth-protected-resource, status: 200, content_type: 'text/html; charset=utf-8', hit: false, reason: spa-html-shell}
+  - {path: /.well-known/api-catalog, status: 200, content_type: 'text/html; charset=utf-8', hit: false, reason: spa-html-shell}
+  - {path: /.well-known/ai-plugin.json, status: 200, content_type: 'text/html; charset=utf-8', hit: false, reason: spa-html-shell}
+  - {path: /.well-known/agent-card.json, status: 200, content_type: 'text/html; charset=utf-8', hit: false, reason: spa-html-shell}
+  - {path: /.well-known/agent.json, status: 200, content_type: 'text/html; charset=utf-8', hit: false, reason: spa-html-shell}
+  - {path: /llms.txt, status: 200, content_type: 'text/html; charset=utf-8', hit: false, reason: spa-html-shell}
+  - {path: /security.txt, status: 200, content_type: 'text/html; charset=utf-8', hit: false, reason: spa-html-shell}
+unreachable_hosts:
+- {host: api.cloutdesk.com, resolution: NXDOMAIN, note: 'published by the provider as CLOUTDESK_API_URL in github.com/cloutdesk/agents'}
+- {host: mcp.cloutdesk.com, resolution: NXDOMAIN}
+- {host: docs.cloutdesk.com, resolution: NXDOMAIN}
+- {host: developer.cloutdesk.com, resolution: NXDOMAIN}
+- {host: status.cloutdesk.com, resolution: NXDOMAIN}
+pointers_emitted: []
+pointers_note: No WellKnown, SecurityTxt, or AgentCard pointer is emitted in apis.yml — a pointer
+  asserts the provider SERVES that surface, and this probe records that it does not.

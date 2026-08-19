@@ -1,29 +1,91 @@
-generated: '2026-07-18'
+generated: '2026-08-13'
 method: searched
-source: https://www.cloutdesk.com/agent-platform
+source: https://github.com/cloutdesk/agents
+sources:
+- https://github.com/cloutdesk/agents
+- https://www.cloutdesk.com/agent-platform
+docs: https://www.cloutdesk.com/agent-platform
 status: beta
 notes: >-
-  OAuth scopes documented on CloutDesk's Agent Platform page (Beta). No scope
-  reference / permissions page is published yet; this is the scope set shown in
-  the page's MCP OAuth-login example (`npx @cloutdesk/mcp oauth login`).
-  Enumerated scopes below are those the vendor explicitly names; the full scope
-  catalog is not yet published.
-docs: https://www.cloutdesk.com/agent-platform
+  UPGRADE over the 2026-07-18 round, which had only the three scope names shown in the
+  Agent Platform page's `npx @cloutdesk/mcp oauth login` example. Cloutdesk's public
+  agents repo (MIT) declares scopes formally — in the `scopes:` frontmatter array of each
+  of the four agent templates and in a "## Required scopes" section of each of the 16
+  SKILL.md files — giving four verified `<resource>:<verb>` scopes. TWO NAMING SYSTEMS ARE
+  IN PLAY and they do not reconcile: the repo uses `collaborations:read` / `creators:read` /
+  `events:emit` / `transactions:read`, while the marketing page's login example uses bare
+  `campaigns` and `collaborations` plus `agreements:write`. Both sets are recorded below
+  under their own source. No scope reference or permissions page is published, so the full
+  catalog is still unknown and neither set can be treated as complete.
+scope_count: 4
+scheme_note: '<resource>:<verb> in the repo; bare resource names in the marketing example'
 schemes:
-  - name: oauth2
-    source: https://www.cloutdesk.com/agent-platform
-    flows:
-      - flow: authorizationCode
+- name: oauth2
+  source: https://www.cloutdesk.com/agent-platform
+  flows:
+  - flow: authorizationCode
+    pkce: true
+    detail: OAuth 2.1 + PKCE, stated for Claude Managed Agents one-click install
+- name: personalAccessToken
+  source: https://github.com/cloutdesk/agents/blob/main/README.md
+  detail: Scoped PAT (cd_pat_) minted from the Cloutdesk dashboard; the repo calls these
+    "required scopes on the integrator's Cloutdesk PAT", so the same scope names gate PATs
+    and OAuth grants.
 scopes:
-  - scope: campaigns
-    description: Access to campaigns
-    flows: [authorizationCode]
-    sources: [https://www.cloutdesk.com/agent-platform]
-  - scope: collaborations
-    description: Access to collaborations
-    flows: [authorizationCode]
-    sources: [https://www.cloutdesk.com/agent-platform]
-  - scope: 'agreements:write'
-    description: Write access to agreements
-    flows: [authorizationCode]
-    sources: [https://www.cloutdesk.com/agent-platform]
+- scope: collaborations:read
+  description: Read collaborations — deliverable state, locked commercial terms, payment schedule,
+    commission split, and metrics.
+  access: read
+  tools: [list_collabs, get_collab, comment_on_deliverable]
+  used_by_templates: [rep-assistant, agreement-reviewer, finance-coordinator, talent-dev]
+  occurrences: 24
+  sources: ['https://github.com/cloutdesk/agents']
+- scope: creators:read
+  description: Read creator/talent profiles — audience demographics, brand-fit signals, historical
+    performance baseline.
+  access: read
+  tools: [get_talent_profile]
+  used_by_templates: [rep-assistant, talent-dev]
+  occurrences: 10
+  sources: ['https://github.com/cloutdesk/agents']
+- scope: events:emit
+  description: Append events to a collaboration timeline / audit trail.
+  access: write
+  tools: [emit_event, comment_on_deliverable]
+  used_by_templates: [rep-assistant, agreement-reviewer]
+  occurrences: 9
+  sources: ['https://github.com/cloutdesk/agents']
+- scope: transactions:read
+  description: Read financial state — AR aging, invoice state, payout queue and Stripe Connect
+    account context.
+  access: read
+  tools: [get_revenue_summary]
+  used_by_templates: [finance-coordinator]
+  occurrences: 4
+  sources: ['https://github.com/cloutdesk/agents']
+scopes_marketing_example:
+  note: >-
+    Named on the Agent Platform page in the MCP OAuth login example
+    (`# scopes: campaigns, collaborations, agreements:write`). These do not match the repo's
+    naming scheme and no reconciliation is published; recorded separately rather than merged.
+  source: https://www.cloutdesk.com/agent-platform
+  scopes:
+  - {scope: campaigns, description: Access to campaigns}
+  - {scope: collaborations, description: Access to collaborations}
+  - {scope: 'agreements:write', description: Write access to agreements, access: write}
+consent_model:
+  granular: true
+  detail: >-
+    'Every action declares the scopes it requires; user consent is granular, not
+    all-or-nothing.' Sensitive actions — e-signature, email send, and creator ingest — are
+    separately consented and explicitly NOT folded into a generic write scope.
+  source: https://www.cloutdesk.com/agent-platform
+gaps:
+- No scopes are published for campaigns, agreements, messaging, or content-approval writes, even
+  though the Agent Platform page lists all four as agent capabilities.
+- No scope reference / permissions page exists; the catalog below is a floor, not a ceiling.
+- The repo scheme and the marketing scheme use different names for the same resources.
+cross_links:
+  authentication: authentication/cloutjam-authentication.yml
+  mcp: mcp/cloutjam-mcp.yml
+  skills: skills/_index.yml

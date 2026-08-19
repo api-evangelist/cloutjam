@@ -1,28 +1,115 @@
-generated: '2026-07-18'
+generated: '2026-08-13'
 method: searched
 source: https://www.cloutdesk.com/agent-platform
+sources:
+- https://www.cloutdesk.com/agent-platform
+- https://github.com/cloutdesk/agents
 status: beta
 notes: >-
-  Standards CloutDesk states its announced (Beta) agent-native API adheres to,
-  per the Agent Platform page. These are vendor claims about an as-yet
-  unpublished spec; conforms=true reflects a documented claim, not an inspected
-  artifact.
+  Standards Cloutdesk's agent surface claims or demonstrably follows. IMPORTANT DISTINCTION,
+  recorded per entry as `basis`: `artifact` means we inspected a real published file (the
+  Agent Skills and agent templates in github.com/cloutdesk/agents are inspectable and were
+  saved verbatim under skills/); `vendor-claim` means the provider asserts it about an
+  as-yet-unpublished API and nothing could be inspected. Most REST-side entries are still
+  vendor claims — no OpenAPI, no docs host, and api.cloutdesk.com does not resolve. No
+  security certification or compliance program (SOC 2, ISO 27001, GDPR, PCI) is published
+  anywhere on Cloutdesk's surface, so no Compliance pointer is emitted in apis.yml.
 standards:
-  - id: oauth2
-    conforms: true
-    evidence: OAuth for org-wide installs, scope-gated (documented)
-  - id: rfc7807-problem-details
-    conforms: true
-    evidence: "REST API described as returning RFC 7807 errors"
-  - id: idempotency
-    conforms: true
-    evidence: "idempotent writes via Idempotency-Key header (documented)"
-  - id: cursor-pagination
-    conforms: true
-    evidence: "REST API described as cursor-paginated"
-  - id: openapi-3.1
-    conforms: true
-    evidence: "vendor claims OpenAPI 3.1 (spec not yet published)"
-  - id: mcp
-    conforms: true
-    evidence: "MCP server with stdio + Streamable HTTP transports (announced)"
+- id: agent-skills
+  name: Anthropic Agent Skills (SKILL.md)
+  conforms: true
+  basis: artifact
+  evidence: 16 SKILL.md files with name/description/license frontmatter published at
+    github.com/cloutdesk/agents/skills/, saved verbatim to skills/
+- id: agents-md
+  name: AGENTS.md project instruction convention (agentsmd.net)
+  conforms: true
+  basis: artifact
+  evidence: AGENTS.md published at repo root, saved verbatim to skills/cloutjam-AGENTS.md
+- id: anthropic-subagent-format
+  name: Anthropic/OpenAI Codex subagent format (agent.md)
+  conforms: true
+  basis: artifact
+  evidence: 4 agent.md templates with name/description/skills/tools/scopes/model frontmatter
+- id: microsoft-agent-framework
+  name: Microsoft Agent Framework declarative manifest
+  conforms: true
+  basis: artifact
+  evidence: 4 microsoft.yaml manifests (kind:Prompt, instructions, tools.mcp.server/name)
+- id: mcp
+  name: Model Context Protocol
+  conforms: partial
+  basis: vendor-claim
+  evidence: MCP server announced with stdio + Streamable HTTP transports and a published six-tool
+    surface; server is not reachable (npm package 404, no host resolves) and tools/list could not be
+    called, so no live protocol conformance was observed
+- id: oauth2
+  conforms: true
+  basis: vendor-claim
+  evidence: OAuth 2.1 + PKCE for org-wide installs and Claude Managed Agents; scope-gated. No
+    authorization/token endpoint published.
+- id: oauth2-pkce
+  name: OAuth 2.1 + PKCE
+  conforms: true
+  basis: vendor-claim
+  evidence: stated for the Claude Managed Agents one-click install
+- id: rfc7807-problem-details
+  conforms: true
+  basis: vendor-claim
+  evidence: REST API described as returning RFC 7807 errors (application/problem+json). No error
+    catalog published to verify against.
+- id: rfc9457-problem-details
+  conforms: unknown
+  basis: none
+  evidence: Provider names RFC 7807, the obsoleted predecessor; RFC 9457 is not referenced.
+- id: idempotency
+  conforms: true
+  basis: vendor-claim
+  evidence: Idempotency-Key header on write operations; "every call accepts an idempotency key"
+- id: cursor-pagination
+  conforms: true
+  basis: vendor-claim
+  evidence: REST API described as cursor-paginated; no cursor parameter or response field published
+- id: openapi-3.1
+  conforms: unknown
+  basis: vendor-claim
+  evidence: 'Vendor states "OpenAPI 3.1" on the Agent Platform page, but no document is served:
+    /openapi.json 404 on www, api.cloutdesk.com NXDOMAIN, no docs host resolves (probed 2026-08-13)'
+- id: rfc8414-oauth-metadata
+  conforms: false
+  basis: probe
+  evidence: /.well-known/oauth-authorization-server returns 404
+- id: openid-connect-discovery
+  conforms: false
+  basis: probe
+  evidence: /.well-known/openid-configuration returns 404
+- id: rfc9116-security-txt
+  conforms: false
+  basis: probe
+  evidence: /.well-known/security.txt returns 404
+- id: a2a
+  name: A2A Agent Card
+  conforms: false
+  basis: probe
+  evidence: /.well-known/agent-card.json and /.well-known/agent.json both return 404 on
+    www.cloutdesk.com (probed 2026-08-13)
+- id: llms-txt
+  conforms: false
+  basis: probe
+  evidence: /llms.txt returns 404
+compliance_program:
+  published: false
+  certifications: []
+  trust_center: null
+  note: No SOC 2, ISO 27001, PCI DSS, HIPAA, FedRAMP, or GDPR posture is published on any Cloutdesk
+    page. The only compliance content on the site is domain compliance for INFLUENCER MARKETING (FTC
+    disclosure rules, exclusivity windows, usage rights) handled by the compliance-check skill — a
+    product capability, not a corporate certification. No Compliance pointer is emitted.
+licensing:
+  agents_repo: MIT
+  source: https://github.com/cloutdesk/agents/blob/main/LICENSE
+cross_links:
+  conventions: conventions/cloutjam-conventions.yml
+  authentication: authentication/cloutjam-authentication.yml
+  well_known: well-known/cloutjam-well-known.yml
+  skills: skills/_index.yml

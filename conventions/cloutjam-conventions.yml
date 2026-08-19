@@ -1,56 +1,137 @@
-generated: '2026-07-18'
+generated: '2026-08-13'
 method: searched
 source: https://www.cloutdesk.com/agent-platform
+sources:
+- https://www.cloutdesk.com/agent-platform
+- https://github.com/cloutdesk/agents
 status: beta
 notes: >-
-  Captured from CloutDesk's public "Agent Platform" page (July 2026), which
-  documents the cross-cutting conventions of its announced agent-native REST
-  API + MCP + CLI surface. The developer platform is in Beta ("Apply for Beta");
-  no OpenAPI spec, docs host, or npm packages are live yet (probed: no
-  api./docs. subdomains resolve; @cloutdesk/mcp and cloutdesk npm packages 404).
-  These are the provider's stated conventions, not derived from a retrievable spec.
+  Cross-cutting semantics of Cloutdesk's announced agent-native surface (REST + MCP + CLI),
+  captured from the provider's own Agent Platform page and — new this round — its public
+  MIT-licensed agents repo. These remain the PROVIDER'S STATED conventions, not conventions
+  read out of a retrievable contract: no OpenAPI is published, no docs host resolves, and
+  the API host api.cloutdesk.com returns NXDOMAIN (re-probed 2026-08-13), so nothing below
+  could be verified against a live response. What the repo adds this round is the MCP tool
+  namespacing convention, the environment-variable contract, and confirmation that rate
+  limits and error handling are left to the integrator.
 authentication:
   style: bearer-token
   token_types:
-    - name: Personal Access Token
-      prefix: 'cd_pat_'
-      use: power users, scripted/CLI workflows
-    - name: OAuth
-      use: organization-wide installs
+  - name: Personal Access Token
+    prefix: cd_pat_
+    env_var: CLOUTDESK_AGENT_PAT
+    use: power users, scripted/CLI workflows, agent runtimes
+  - name: OAuth 2.1 + PKCE
+    use: organization-wide installs, Claude Managed Agents one-click install
   scope_gated: true
+  detail: authentication/cloutjam-authentication.yml
 idempotency:
   supported: true
   header: Idempotency-Key
-  scope: write operations
-  example: 'POST /v1/collaborations with Idempotency-Key'
-  source_ref: conventions on https://www.cloutdesk.com/agent-platform
+  scope: write operations / every mutation
+  example: 'POST /v1/collaborations with Idempotency-Key: a1f8c…'
+  claim: 'Every call accepts an idempotency key and lands in the same audit log your team already uses.'
+  source: https://www.cloutdesk.com/agent-platform
+  verified_against_spec: false
 pagination:
   style: cursor
   documented_as: Cursor-paginated
+  params_published: false
+  response_fields_published: false
+  source: https://www.cloutdesk.com/agent-platform
 versioning:
   scheme: uri-path
   current: v1
+  evidence: POST /v1/collaborations
 error_envelope:
   format: rfc7807
   media_type: application/problem+json
+  documented_as: RFC 7807 errors
+  catalog_published: false
+  note: No error/problem-type reference is published, so no errors/ catalog could be derived —
+    only the envelope format is known.
 rate_limiting:
   documented: true
-  detail: "operations described as rate-limited (signaling format not yet published)"
+  quantified: false
+  headers_published: false
+  detail: 'Listed as a platform guarantee ("Rate-limited"); no limits, windows, or response headers
+    are published. The repo README FAQ states rate limits are "the integrator''s responsibility."'
+  artifact: rate-limits/cloutjam-rate-limits.yml
+dry_run:
+  supported: true
+  scope: every mutation
+  claim: 'Dry-run on every mutation — agents validate full workflows end-to-end before any data is
+    written.'
+  source: https://www.cloutdesk.com/agent-platform
+  parameter_published: false
+  note: No parameter or header name for invoking a dry run is published.
+audit:
+  audited: true
+  mechanism: collaboration timeline events
+  agent_tool: cloutdesk__emit_event
+  claim: 'Audited everything; granular per-action attribution, full approval and rollback controls,
+    complete audit trail in the human dashboard.'
+  source: https://www.cloutdesk.com/agent-platform
+authorization:
+  row_level_security: true
+  detail: 'Agents call tools with the same row-level permissions as a human teammate (RLS-enforced).'
+  granular_consent: true
+  sensitive_actions_separately_consented: [e-signature, email send, creator ingest]
+state_model:
+  durable_state_machines: true
+  detail: 'Built around real-world business semantics — RLS-enforced permissions, durable state
+    machines, idempotent writes, audited everything.'
+  example_stages: [concept, content, live post, metrics]
+mcp_conventions:
+  server_config_key: cloutdesk
+  tool_namespace: cloutdesk__<tool>
+  namespace_note: 'The MCP server config key MUST be `cloutdesk` so tools resolve as
+    `cloutdesk__<tool>`. Microsoft Agent Framework binds bare tool names via
+    `tools.mcp.server: cloutdesk` instead of the prefix convention.'
+  env_contract:
+  - {name: CLOUTDESK_API_URL, value: 'https://api.cloutdesk.com'}
+  - {name: CLOUTDESK_AGENT_PAT, value: '<pat>'}
+  source: https://github.com/cloutdesk/agents/blob/main/README.md
+agent_conventions:
+  skill_format: Anthropic Agent Skills (SKILL.md with name/description/license frontmatter)
+  template_format: Anthropic + OpenAI Codex subagent format (agent.md) and Microsoft Agent Framework
+    declarative manifest (microsoft.yaml)
+  project_instructions: AGENTS.md (agentsmd.net convention)
+  naming:
+    skills: capability-named — gerund or activity noun-phrase; never persona-suffixed
+    templates: persona-named — <role>-<role-modifier>
+    slug_format: lowercase, hyphens, <=64 chars
+  source: https://github.com/cloutdesk/agents/blob/main/AGENTS.md
 governance_controls:
-  - idempotent
-  - scope-gated
-  - audited
-  - rate-limited
-  - dry-runnable
+- idempotent
+- scope-gated
+- audited
+- rate-limited
+- dry-runnable
+- webhook + realtime
 realtime:
   webhooks: true
   realtime: true
+  catalog_published: false
+  note: 'Webhook + Realtime is asserted as a platform guarantee, but no event catalog, payload
+    schema, or AsyncAPI document is published — so no asyncapi/ artifact and no Webhooks pointer
+    is emitted. The only event-shaped surface actually documented is the cloutdesk__emit_event MCP
+    tool, which writes to the collab timeline rather than delivering events outbound.'
 spec:
   claimed: OpenAPI 3.1
   published: false
+  probed:
+  - {url: 'https://www.cloutdesk.com/openapi.json', status: 404}
+  - {url: 'https://api.cloutdesk.com/openapi.json', status: 0, note: NXDOMAIN}
+  - {url: 'https://docs.cloutdesk.com/', status: 0, note: NXDOMAIN}
+  checked: '2026-08-13'
 cross_links:
   authentication: authentication/cloutjam-authentication.yml
   scopes: scopes/cloutjam-scopes.yml
   mcp: mcp/cloutjam-mcp.yml
   cli: cli/cloutjam-cli.yml
   conformance: conformance/cloutjam-conformance.yml
+  lifecycle: lifecycle/cloutjam-lifecycle.yml
+  rate_limits: rate-limits/cloutjam-rate-limits.yml
+  data_model: data-model/cloutjam-data-model.yml
+  skills: skills/_index.yml

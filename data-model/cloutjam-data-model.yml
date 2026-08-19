@@ -1,0 +1,179 @@
+generated: '2026-08-13'
+method: derived
+source: https://github.com/cloutdesk/agents
+sources:
+- https://github.com/cloutdesk/agents (skills/*/SKILL.md, agents/*/agent.md)
+- https://www.cloutdesk.com/agent-platform
+notes: >-
+  DERIVED, not searched. Cloutdesk publishes no OpenAPI document and no object
+  reference, so this entity graph is derived from what the provider's own public
+  agent-skills repo states about the objects its six MCP tools read and write:
+  the tool names themselves, the arguments used in the repo's verbatim JSON-RPC
+  examples, the id prefixes shown in those examples, and the object vocabulary the
+  16 SKILL.md bodies use consistently. Relationships marked confidence `low` are
+  inferred from prose only. Cardinality and field lists are NOT published anywhere
+  and are deliberately omitted rather than guessed.
+grounding:
+  openapi: null
+  openapi_note: no OpenAPI published; entities derived from MCP tool surface + skill prose
+  mcp: mcp/cloutjam-mcp.yml
+id_prefixes:
+  note: The only id prefixes the provider publishes verbatim, from JSON-RPC examples in
+    agents/rep-assistant/agent.md and the Agent Platform page.
+  observed:
+  - prefix: crt_
+    entity: creator
+    example: crt_abc123
+    source: agents/rep-assistant/agent.md
+  - prefix: dlv_
+    entity: deliverable
+    example: dlv_xyz789
+    source: agents/rep-assistant/agent.md
+  - prefix: collab_
+    entity: collaboration
+    example: collab_8f2…
+    source: https://www.cloutdesk.com/agent-platform
+  - prefix: cd_pat_
+    entity: personal-access-token
+    example: cd_pat_…
+    source: https://www.cloutdesk.com/agent-platform
+entities:
+- name: collaboration
+  aliases: [collab]
+  id_field: collab_id
+  id_prefix: collab_
+  description: The central unit of work — one creator engaged on one campaign, carrying locked
+    commercial terms, a payment schedule, a commission split, deliverables, and a timeline.
+  read_by: [list_collabs, get_collab]
+  scope: collaborations:read
+  evidence: cloutdesk__get_collab documented as reading "deliverable state and locked terms",
+    "payment schedule + commission split", and "current state + interaction history"
+- name: creator
+  aliases: [talent, talent profile]
+  id_field: creator_id
+  id_prefix: crt_
+  description: A creator on the agency's roster, with audience demographics, brand-fit signals,
+    and a historical performance baseline.
+  read_by: [get_talent_profile]
+  scope: creators:read
+  evidence: cloutdesk__get_talent_profile documented as reading "audience demographics + historical
+    performance"
+- name: deliverable
+  id_field: deliverable_id
+  id_prefix: dlv_
+  description: A single piece of contracted work inside a collaboration, moving through concept,
+    content, live-post, and metrics stages, and carrying comments.
+  read_by: [get_collab]
+  written_by: [comment_on_deliverable]
+  evidence: cloutdesk__comment_on_deliverable takes deliverable_id + body; deliverable-tracking
+    SKILL.md describes concept/content/live-post stages
+- name: campaign
+  description: A brand-side program that groups collaborations, with a brief and a budget.
+  read_by: [list_collabs]
+  evidence: campaign-recap-reporting SKILL.md ("enumerate the collabs that ran under the campaign");
+    Agent Platform page capability "Campaign Operations — create campaigns, manage briefs, and
+    orchestrate budgets across collaborations"
+- name: agreement
+  description: The creator contract attached to a collaboration, with structured versioning,
+    redlines, counter-proposals, and e-signature dispatch.
+  evidence: influencer-contract-drafting / -review / -negotiation SKILL.md; Agent Platform page
+    "Agreements & E-signature — edit terms, prepare for signature, and dispatch via esignatures.io"
+  note: No MCP tool is published for agreement read or write; the contract skills read agreement
+    context through get_collab.
+- name: invoice
+  description: A billing document raised against collaboration terms, tracked through issuance,
+    payment, dispute, and reconciliation.
+  read_by: [get_revenue_summary]
+  scope: transactions:read
+  evidence: invoice-management SKILL.md; cloutdesk__get_revenue_summary documented as reading
+    "AR aging + invoice state"
+- name: payout
+  description: The creator-side disbursement of a collaboration, net of the agency commission split,
+    routed through Stripe Connect.
+  read_by: [get_revenue_summary]
+  scope: transactions:read
+  evidence: payout-orchestration SKILL.md ("routing the creator-side disbursement through Stripe
+    Connect"); get_revenue_summary reads "the payout queue with Connect-account context"
+- name: event
+  description: An audit-trail / timeline entry appended to a collaboration when an agent
+    communicates, reviews, negotiates, or changes status.
+  written_by: [emit_event]
+  scope: events:emit
+  evidence: cloutdesk__emit_event documented as logging events "to the collab timeline"
+- name: personal-access-token
+  id_prefix: cd_pat_
+  description: A scoped bearer credential minted from the Cloutdesk dashboard for scripted, CLI,
+    and agent access.
+  evidence: 'Agent Platform page (Authorization: Bearer cd_pat_…); repo env var CLOUTDESK_AGENT_PAT'
+relationships:
+- from: campaign
+  to: collaboration
+  type: has_many
+  confidence: high
+  evidence: "campaign-recap-reporting: 'enumerate the collabs that ran under the campaign'"
+- from: collaboration
+  to: creator
+  type: belongs_to
+  confidence: high
+  evidence: talent-discovery / proposal-drafting shortlist creators who are then opened into collabs
+- from: collaboration
+  to: deliverable
+  type: has_many
+  confidence: high
+  evidence: "get_collab reads 'deliverable state' for a collab; deliverable-tracking surfaces
+    deliverables 'across active collabs'"
+- from: collaboration
+  to: agreement
+  type: has_one
+  via: collab terms
+  confidence: medium
+  evidence: "influencer-contract-drafting drafts an agreement 'from a collab's locked terms';
+    get_collab reads 'the collab context the agreement attaches to'"
+- from: collaboration
+  to: event
+  type: has_many
+  via: timeline
+  confidence: high
+  evidence: emit_event logs onto "the collab timeline"
+- from: collaboration
+  to: invoice
+  type: has_many
+  confidence: medium
+  evidence: "invoice-management reconciles invoices 'against the collab terms that drove each
+    invoice'; list_collabs cross-references invoice line items against active collabs"
+- from: collaboration
+  to: payout
+  type: has_many
+  via: commission split
+  confidence: medium
+  evidence: "payout-orchestration computes 'the agency's commission split' per collab"
+- from: deliverable
+  to: event
+  type: has_many
+  confidence: medium
+  evidence: "deliverable-tracking: emit_event 'signals a deliverable status change to downstream
+    consumers'"
+- from: creator
+  to: collaboration
+  type: has_many
+  confidence: high
+  evidence: "list_collabs surfaces 'the creator's past collab themes + outcomes'"
+external_systems:
+- name: Stripe Connect
+  role: creator payout disbursement
+  evidence: payout-orchestration SKILL.md
+- name: esignatures.io
+  role: agreement e-signature dispatch
+  evidence: https://www.cloutdesk.com/agent-platform
+- name: Nylas
+  role: threaded creator messaging
+  evidence: https://www.cloutdesk.com/agent-platform (Talent Manager Skills)
+- name: Supabase
+  role: dashboard data layer (observed in the dashboard.cloutdesk.com bundle)
+  evidence: https://dashboard.cloutdesk.com (Vite bundle loads assets/supabase-*.js)
+  confidence: low
+cross_links:
+  mcp: mcp/cloutjam-mcp.yml
+  skills: skills/_index.yml
+  scopes: scopes/cloutjam-scopes.yml
+  conventions: conventions/cloutjam-conventions.yml
