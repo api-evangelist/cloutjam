@@ -64,6 +64,113 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-CloutJam is a company surfaced as a portfolio company of 500-global and added to the API Evangelist network as a stub for enrichment. This profile is a lead awaiting the enrichment pipeline.
+CloutDesk (formerly CloutJam) is a 500 Global-backed, New York-based platform for modern influencer marketing and creator management, building open infrastructure that lets agencies, brands, and talent representatives run creator partnerships end-to-end - outreach, relationship management, content approval, contract negotiation, invoicing, reporting, and payments. Its agent-first Agent Platform (closed beta) exposes every workflow to AI agents through an MCP server with six published tools, a cursor-paginated v1 REST API with RFC 7807 errors and idempotent writes, and a CLI. CloutDesk also publishes 16 MIT-licensed Agent Skills and four agent templates for Claude Code, OpenAI Codex, and Microsoft Agent Framework in its own public GitHub org.
 
-Backed by: 500-global — https://cloutdesk.com
+**Areas:** Company · Influencer Marketing · Creator Management · Creator Economy · Marketing · AI Agents · Agents · MCP · Agent Skills · Talent Management · Influencer Marketing Platform
+
+## CloutJam on APIs.io
+
+Everything profiled for CloutJam is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/cloutjam/](https://apis.io/providers/cloutjam/)** — or go straight to one of the APIs or properties below.
+
+### APIs (1)
+
+- [Cloutdesk Agent Platform API](https://apis.io/apis/cloutjam/agent-platform/) — The v1 REST API behind Cloutdesk's Agent Platform — the programmatic surface agencies, brands, and talent representatives use to run influencer marketing…
+
+### Published properties
+
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### MCP servers (1)
+
+Model Context Protocol servers that expose the API to agents.
+
+- [cloutdesk](https://apis.io/servers/cloutjam/cloutdesk/)
+
+#### Security (2)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Cloutjam Authentication](https://apis.io/security/cloutjam/cloutjam-authentication/)
+- [Cloutjam Domain Security](https://apis.io/security/cloutjam/cloutjam-domain-security/)
+
+#### OAuth scopes (1)
+
+The permissions the API asks for.
+
+- [Cloutjam Scopes](https://apis.io/scopes/cloutjam/cloutjam-scopes/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Cloutjam Plans Pricing](https://apis.io/plans/cloutjam/cloutjam-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Cloutjam Rate Limits](https://apis.io/rate-limits/cloutjam/cloutjam-rate-limits/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://cloutdesk.com)
+- [Documentation](https://www.cloutdesk.com/agent-platform)
+- [Getting started](https://github.com/cloutdesk/agents#quick-start)
+- [Terms of service](https://www.cloutdesk.com/terms-of-service)
+- [Privacy policy](https://www.iubenda.com/privacy-policy/65621163/cookie-policy)
+- [GitHub](https://github.com/cloutdesk)
+
+## API Evangelist rating
+
+**Kin Score 27.1** — thin · rubric 0.24.0 · scored 2026-10-17
+
+| Facet | Score |
+|---|---|
+| Discoverability | 65.0 |
+| Contract quality | 0.0 |
+| Contract governance | 18.2 |
+| Operational transparency | 2.6 |
+| Developer ergonomics | 61.9 |
+| Access clarity | 17.1 |
+
+**Agent readiness 15.3** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | — |
+| Agentic Access | — |
+| Reversibility Documented | — |
+| MCP Server | documented (partial credit) |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | documented (partial credit) |
+| Error Semantics | — |
+| OpenAPI Examples | — |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | yes |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+
+**Regulatory alignment 30.4** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/cloutjam/](https://apis.io/providers/cloutjam/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for CloutJam: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/cloutjam/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
